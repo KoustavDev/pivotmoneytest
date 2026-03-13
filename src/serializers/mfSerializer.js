@@ -51,4 +51,31 @@ const serializeHistoricalNAV = (rawData) => {
   };
 };
 
-export { serializeSearchResults, serializeLatestNAV, serializeHistoricalNAV };
+// Serializer for scheme details
+// Maps raw BSE-style keys to frontend-safe response shape
+const serializeSchemeResponse = (rawData) => {
+  if (!rawData) {
+    return {
+      schemeName: "",
+      isin: "",
+      category: "",
+      amcCode: "",
+      isSipAllowed: false,
+    };
+  }
+
+  return {
+    schemeName: rawData.scheme_name || "",
+    isin: rawData.isin_no || "",
+    category: rawData.category_name || "",
+    amcCode: rawData.amc_code || "",
+    isSipAllowed: rawData.sip_allowed_flag === "Y",
+  };
+};
+
+export {
+  serializeSearchResults,
+  serializeLatestNAV,
+  serializeHistoricalNAV,
+  serializeSchemeResponse,
+};

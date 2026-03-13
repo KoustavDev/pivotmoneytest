@@ -1,5 +1,10 @@
 # Test Endpoints
 
+## Base URLs
+
+- Local: http://localhost:8080
+- Live: http://18.205.25.250:8080
+
 ## Start the server first
 
 ```bash
@@ -27,7 +32,75 @@ curl "http://localhost:8080/api/mf/search?q=sbi"
 curl "http://localhost:8080/api/mf/search?q=equity"
 ```
 
-### 3. Get latest NAV (using common scheme codes)
+### 3. User Signup
+
+```bash
+curl -X POST "http://localhost:8080/api/user/signup" \
+	-H "Content-Type: application/json" \
+	-d '{
+		"fullName": "Ravi Shankar",
+		"panNumber": "ABCDE1234F",
+		"dateOfBirth": "1990-05-15",
+		"email": "ravi@example.com",
+		"mobile": "9876543210"
+	}'
+```
+
+Expected response:
+
+```json
+{
+  "success": true,
+  "userId": "USR-1773416261981",
+  "message": "Client registered successfully with BSE StAR MF 2.0"
+}
+```
+
+### 4. Order Entry
+
+```bash
+curl -X POST "http://localhost:8080/api/order/entry" \
+	-H "Content-Type: application/json" \
+	-d '{
+		"fundIsin": "INF179K01AA6",
+		"investmentAmount": 5000,
+		"folioNumber": "12345678"
+	}'
+```
+
+Expected response:
+
+```json
+{
+  "success": true,
+  "orderId": "BSE998877",
+  "message": "Order accepted"
+}
+```
+
+### 5. Scheme Details
+
+```bash
+curl "http://localhost:8080/api/scheme/details/119551"
+```
+
+Expected response:
+
+```json
+{
+  "success": true,
+  "message": "Scheme details fetched successfully",
+  "data": {
+    "schemeName": "Axis Bluechip Fund Direct Growth",
+    "isin": "INF846K01DP8",
+    "category": "Equity - Large Cap",
+    "amcCode": "AMC001",
+    "isSipAllowed": true
+  }
+}
+```
+
+### 6. Get latest NAV (using common scheme codes)
 
 ```bash
 
@@ -40,7 +113,7 @@ curl "http://localhost:8080/api/mf/100068/latest"
 
 ```
 
-### 4. Get historical NAV data
+### 7. Get historical NAV data
 
 ```bash
 # Get last 30 days data

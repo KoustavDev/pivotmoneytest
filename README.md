@@ -7,6 +7,9 @@ A Node.js Express API service that interfaces with the MF API (https://api.mfapi
 ✅ **Search Mutual Funds** - Search for mutual funds by name  
 ✅ **Latest NAV Data** - Get current Net Asset Value for any scheme  
 ✅ **Historical NAV Data** - Get historical data with optional date filtering  
+✅ **Scheme Details Endpoint** - Clean serialized scheme details for frontend use  
+✅ **User Signup Endpoint** - Mock BSE StAR MF 2.0 client registration  
+✅ **Order Entry Endpoint** - Mock BSE StAR MF 2.0 order placement  
 ✅ **Input validation** with Zod schemas  
 ✅ **Centralized error handling**  
 ✅ **Clean serialized responses**  
@@ -30,9 +33,96 @@ npm run dev
 
 The server will start on http://localhost:8080
 
+## Base URLs
+
+- Local: http://localhost:8080
+- Live: http://18.205.25.250:8080
+
 ## API Endpoints
 
-### 1. Search Mutual Funds
+### 1. User Signup
+
+**POST** `/api/user/signup`
+
+Register a client with BSE StAR MF 2.0 (mock integration).
+
+**Request Body:**
+
+```json
+{
+  "fullName": "Ravi Shankar",
+  "panNumber": "ABCDE1234F",
+  "dateOfBirth": "1990-05-15",
+  "email": "ravi@example.com",
+  "mobile": "9876543210"
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "userId": "USR-1773416261981",
+  "message": "Client registered successfully with BSE StAR MF 2.0"
+}
+```
+
+### 2. Order Entry
+
+**POST** `/api/order/entry`
+
+Place an order with BSE StAR MF 2.0 (mock integration).
+
+**Request Body:**
+
+```json
+{
+  "fundIsin": "INF179K01AA6",
+  "investmentAmount": 5000,
+  "folioNumber": "12345678"
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "orderId": "BSE998877",
+  "message": "Order accepted"
+}
+```
+
+### 3. Scheme Details
+
+**GET** `/api/mf/scheme/details/{schemeCode}`
+
+Get clean, frontend-safe scheme details from a raw BSE-style source.
+
+**Example:**
+
+```bash
+curl "http://localhost:8080/api/scheme/details/119551"
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Scheme details fetched successfully",
+  "data": {
+    "schemeName": "Axis Bluechip Fund Direct Growth",
+    "isin": "INF846K01DP8",
+    "category": "Equity - Large Cap",
+    "amcCode": "AMC001",
+    "isSipAllowed": true
+  }
+}
+```
+
+### 4. Search Mutual Funds
 
 **GET** `/api/mf/search?q={query}`
 
@@ -65,7 +155,7 @@ curl "http://localhost:8080/api/mf/search?q=hdfc"
 }
 ```
 
-### 2. Latest NAV
+### 5. Latest NAV
 
 **GET** `/api/mf/{schemeCode}/latest`
 
@@ -96,7 +186,7 @@ curl "http://localhost:8080/api/mf/125497/latest"
 }
 ```
 
-### 3. Historical NAV (Bonus Feature)
+### 6. Historical NAV (Bonus Feature)
 
 **GET** `/api/mf/{schemeCode}/historical?startDate={date}&endDate={date}`
 
@@ -113,7 +203,6 @@ Get historical NAV data for a scheme with optional date filtering.
 ```bash
 curl "http://localhost:8080/api/mf/125497/historical?startDate=2024-01-01&endDate=2024-03-13"
 ```
-
 
 ## Error Handling
 
@@ -170,6 +259,4 @@ The codebase follows Node.js best practices:
 
 - `PORT`: Server port (default: 8080)
 
-## License
 
-ISC License

@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import mfRoutes from "./routes/mfRoutes.js";
+import schemeRoutes from "./routes/schemeRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -24,6 +27,9 @@ app.get("/", (req, res) => {
 
 // API Routes
 app.use("/api/mf", mfRoutes);
+app.use("/api/scheme", schemeRoutes);
+app.use("/api/order", orderRoutes);
+app.use("/api/user", userRoutes);
 
 // Error handling middleware
 app.use(notFoundHandler);
