@@ -1,25 +1,4 @@
 /**
- * BSE Mapper — transforms the clean frontend payload into the
- * exact snake_case format required by the BSE StAR MF 2.0 API.
- *
- * Frontend field  →  BSE StAR MF 2.0 field
- * ──────────────────────────────────────────
- * fullName        →  client_name
- * panNumber       →  pan_no
- * dateOfBirth     →  dob          (re-formatted to DD/MM/YYYY)
- * email           →  email_id
- * mobile          →  mobile_no
- * gender          →  gender       ('M' | 'F' | 'T')
- * address         →  address
- * city            →  city
- * state           →  state
- * pincode         →  pin_code
- * country         →  country      (defaults to 'IN')
- * occupation      →  occ_code
- * testError       →  test_error   (internal flag for mock error simulation)
- */
-
-/**
  * Converts a date string (any format parseable by Date) into DD/MM/YYYY as required by BSE StAR MF 2.0.
  * @param {string} dateStr
  * @returns {string}
